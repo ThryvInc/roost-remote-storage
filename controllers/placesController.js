@@ -5,6 +5,8 @@ exports.postPlaces = function(req, res) {
   // Create a new instance of the Place model
   var place = new Place();
 
+  console.log(req)
+
   // Set the place properties that came from the POST data
   place.name = req.body.name;
   place.ssids = req.body.ssids;
@@ -50,9 +52,10 @@ exports.putPlace = function(req, res) {
     if (err)
       res.send(err);
 
-    place.name = req.body.name;
-    place.devices = req.body.devices;
-    place.imageUrl = req.body.imageUrl;
+    if (req.body.name) place.name = req.body.name;
+    if (req.body.devices) place.devices = req.body.devices;
+    if (req.body.ssids) place.ssids = req.body.ssids;
+    if (req.body.imageUrl) place.imageUrl = req.body.imageUrl;
 
     // Save the place and check for errors
     place.save(function(err) {

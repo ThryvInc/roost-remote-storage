@@ -1,5 +1,6 @@
 var Device = require('../models/device');
 var Place = require('../models/place');
+var mongoose = require('mongoose');
 
 // Create endpoint /api/v1/places/:place_id/devices for POSTS
 exports.postDevices = function(req, res) {
@@ -14,39 +15,26 @@ exports.postDevices = function(req, res) {
   device.hostNamespace = req.body.hostNamespace;
   device.properties = req.body.properties;
   device.imageUrl = req.body.imageUrl;
+  device.placeId = req.params.place_id;
 
   // Save the device and check for errors
   device.save(function(err) {
     if (err)
       res.send(err);
 
-    Place.findById(req.params.place_id, function(err, place) {
-      place.devices.push(device._id)
-      place.save(function(err) {
-        if (err)
-          res.send(err);
-
-        res.json({ message: 'Device added!', data: device });
-      });
-    });
+    res.json({ message: 'Device added!', data: device });
   });
 };
 
 // Create endpoint /api/v1/places/:place_id/devices for GET
 exports.getDevices = function(req, res) {
-  Place.findById(req.params.place_id, function(err, place) {
+  Device.find({
+    'placeId': req.params.place_id
+  }, function(err, devices){
     if (err)
       res.send(err);
 
-    deviceIds = _.map(place.devices, function(deviceId){ return mongoose.Types.ObjectId(deviceId) });
-    Place.find({
-      '_id': { $in: deviceIds }
-    }, function(err, devices){
-      if (err)
-        res.send(err);
-
-      res.json(devices);
-    });
+    res.json(devices);
   });
 };
 
@@ -57,9 +45,13 @@ exports.putDevice = function(req, res) {
     if (err)
       res.send(err);
 
-    device.name = req.body.name;
-    device.devices = req.body.devices;
-    device.imageUrl = req.body.imageUrl;
+    if (req.body.name) device.name = req.body.name;
+    if (req.body.describer) device.describer = req.body.describer;
+    if (req.body.describerNamespace) device.describerNamespace = req.body.describerNamespace;
+    if (req.body.host) device.host = req.body.host;
+    if (req.body.hostNamespace) device.hostNamespace = req.body.hostNamespace;
+    if (req.body.properties) device.properties = req.body.properties;
+    if (req.body.imageUrl) device.imageUrl = req.body.imageUrl;
 
     // Save the device and check for errors
     device.save(function(err) {

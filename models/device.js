@@ -7,8 +7,9 @@ var DeviceSchema   = new mongoose.Schema({
   describerNamespace: String,
   host: String,
   hostNamespace: String,
-  properties: String,
-  imageUrl: String
+  properties: Object,
+  imageUrl: String,
+  placeId: String
 });
 
 // Export the Mongoose model
