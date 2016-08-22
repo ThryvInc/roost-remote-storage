@@ -18,10 +18,13 @@ router.get('/', function(req, res) {
   res.json({ message: 'It is ALIIIIIVE!' });
 });
 
+router.route('/login')
+  .post(authController.login);
+
 router.route('/users')
   .post(usersController.postUsers);
 router.route('/users/:user_id')
-  .delete(authController.isAuthenticated, usersController.deleteUser)
+  .delete(authController.isAuthenticated, usersController.deleteUser);
 
 router.route('/places')
   .get(authController.isAuthenticated, placesController.getPlaces)
@@ -29,14 +32,14 @@ router.route('/places')
 router.route('/places/:place_id')
   .get(authController.isAuthenticated, placesController.getPlace)
   .put(authController.isAuthenticated, placesController.putPlace)
-  .delete(authController.isAuthenticated, placesController.deletePlace)
+  .delete(authController.isAuthenticated, placesController.deletePlace);
 
 router.route('/places/:place_id/devices')
   .get(authController.isAuthenticated, devicesController.getDevices)
   .post(authController.isAuthenticated, devicesController.postDevices);
 router.route('/devices/:device_id')
   .put(authController.isAuthenticated, devicesController.putDevice)
-  .delete(authController.isAuthenticated, devicesController.deleteDevice)
+  .delete(authController.isAuthenticated, devicesController.deleteDevice);
 
 app.use('/api/v1', router);
 
