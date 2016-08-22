@@ -1,31 +1,30 @@
 var passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;
-var LocalAPIKeyStrategy = require('passport-localapikey').Strategy;
+var LocalAPIKeyStrategy = require('passport-localapikey-update').Strategy;
 var User = require('../models/user');
 
-passport.use(new BasicStrategy(
-  function(username, password, callback) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) { return callback(err); }
+exports.isVerified = function(req, res) {
+  User.findOne({ username: req.body.username }, function (err, user) {
+    if (err)
+      res.send(err);
 
-      // No user found with that username
-      if (!user) { return callback(null, false); }
+    // No user found with that username
+    if (!user) { res.send(err); }
 
-      // Make sure the password is correct
-      user.verifyPassword(password, function(err, isMatch) {
-        if (err) { return callback(err); }
+    // Make sure the password is correct
+    user.verifyPassword(req.body.password, function(err, isMatch) {
+      if (err) { res.send(err); }
 
-        // Password did not match
-        if (!isMatch) { return callback(null, false); }
+      // Password did not match
+      if (!isMatch) { res.send(err); }
 
-        // Success
-        return callback(null, user);
-      });
+      // Success
+      res.json(user);
     });
-  }
-));
+  });
+};
 
-passport.use(new LocalAPIKeyStrategy(
+passport.use(new LocalAPIKeyStrategy({apiKeyHeader: "x-api-key"},
   function(key, callback) {
     User.findOne({ apiKey: key }, function (err, user) {
       if (err) { return callback(err); }
@@ -34,6 +33,4 @@ passport.use(new LocalAPIKeyStrategy(
     });
   }
 ));
-
-exports.login = passport.authenticate('basic', { session: false} );
 exports.isAuthenticated = passport.authenticate('localapikey', { session : false });
