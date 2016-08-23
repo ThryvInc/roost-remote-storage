@@ -44,11 +44,12 @@ db.once('open', function() {
     .get(authController.isAuthenticated, devicesController.getDevices)
     .post(authController.isAuthenticated, devicesController.postDevices);
   router.route('/devices/:device_id')
+    .get(authController.isAuthenticated, devicesController.getDevice)
     .put(authController.isAuthenticated, devicesController.putDevice)
     .delete(authController.isAuthenticated, devicesController.deleteDevice);
 
   app.use('/api/v1', router);
-  
+
   var server = app.listen(process.env.PORT || 8080, function () {
     var port = server.address().port;
     console.log("App now on port", port);

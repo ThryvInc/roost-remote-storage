@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 var PlaceSchema = new mongoose.Schema({
   name: String,
   ssids: Array,
-  devices: Array,
   imageUrl: String,
   userId: String
 });

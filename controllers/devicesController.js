@@ -38,6 +38,16 @@ exports.getDevices = function(req, res) {
   });
 };
 
+// Create endpoint /api/v1/devices/:device_id for GET
+exports.getDevice = function(req, res) {
+  Device.findById(req.params.device_id, function(err, device){
+    if (err)
+      res.send(err);
+
+    res.json(device);
+  });
+};
+
 // Create endpoint /api/devices/:device_id for PUT
 exports.putDevice = function(req, res) {
   // Use the Device model to find a specific device
