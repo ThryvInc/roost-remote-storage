@@ -8,6 +8,7 @@ var authController = require('./controllers/authController');
 var usersController = require('./controllers/usersController')
 var placesController = require('./controllers/placesController')
 var devicesController = require('./controllers/devicesController')
+var deviceTypesController = require('./controllers/deviceTypesController')
 
 var app = express();
 app.use(bodyParser.json());
@@ -47,6 +48,12 @@ db.once('open', function() {
     .get(authController.isAuthenticated, devicesController.getDevice)
     .put(authController.isAuthenticated, devicesController.putDevice)
     .delete(authController.isAuthenticated, devicesController.deleteDevice);
+
+  // router.route('/device_types')
+  //   .get(authController.isAuthenticated, placesController.getPlaces)
+  //   .post(authController.isAuthenticated, placesController.postPlaces);
+  router.route('/device_types/:device_type_id')
+    .get(authController.isAuthenticated, deviceTypesController.getDeviceType)
 
   app.use('/api/v1', router);
 
