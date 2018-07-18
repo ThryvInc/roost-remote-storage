@@ -7,6 +7,7 @@ exports.getDeviceType = function(req, res) {
     if (err)
       res.send(err);
 
+  	console.log(JSON.stringify(req.params))
     res.json(device_type);
   });
 };
