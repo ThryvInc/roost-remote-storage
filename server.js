@@ -49,9 +49,6 @@ db.once('open', function() {
     .put(authController.isAuthenticated, devicesController.putDevice)
     .delete(authController.isAuthenticated, devicesController.deleteDevice);
 
-  // router.route('/device_types')
-  //   .get(authController.isAuthenticated, placesController.getPlaces)
-  //   .post(authController.isAuthenticated, placesController.postPlaces);
   router.route('/device_types/:device_type_id')
     .get(authController.isAuthenticated, deviceTypesController.getDeviceType)
 
