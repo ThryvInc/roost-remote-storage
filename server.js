@@ -1,6 +1,7 @@
 var express = require("express");
 var path = require("path");
 var bodyParser = require("body-parser");
+var dotenv = require('dotenv');
 var mongoose = require('mongoose');
 var passport = require('passport');
 
@@ -14,7 +15,9 @@ var app = express();
 app.use(bodyParser.json());
 
 // Connect to the database before starting the application server.
-mongoose.connect(process.env.MONGODB_URI);
+dotenv.config();
+const mongoUrl = process.env.MONGODB_URI;
+mongoose.connect(mongoUrl);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
