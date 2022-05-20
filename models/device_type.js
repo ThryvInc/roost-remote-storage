@@ -8,4 +8,4 @@ var DeviceTypeSchema = new mongoose.Schema({
 });
 
 // Export the Mongoose model
-module.exports = mongoose.model('DeviceType', DeviceTypeSchema);
+module.exports = mongoose.model('DeviceType', DeviceTypeSchema, 'device types');
